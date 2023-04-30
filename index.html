@@ -1,0 +1,460 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beanie Blast</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.min.js" integrity="sha512-YQL0GVx/Too3vZjBl9plePRIYsRnd1s8N6QOvXPdZ+JMH2mtRTLQXGUDGjNW6zr1HUgcOIury67IvWe91oeEwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        body.intro {
+            background-color: #254c58;
+        }
+        body.body {
+            background-color: #111111;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        class S0 extends Phaser.Scene {
+            constructor() {
+                super('s0');
+            }
+            create() {
+            this.cameras.main.setBackgroundColor('#000000');
+
+            this.textObject0 = this.add.text(
+                    130, //x
+                    190,//y
+                    "click to continue", //text
+                    {
+                        font: "60px Arial",
+                        color: "#FFFFFF",
+                        align: "center"
+                    } //style
+                );
+            //textObject0.setAlpha(1);
+            this.tweens.add({
+                targets: this.textObject0,
+                alpha:0,
+                duration: 2000,
+                repeat: -1,
+            });
+
+            this.input.on('pointerdown', () => this.scene.start('scene1'));
+            }
+        }
+        class Scene1 extends Phaser.Scene {
+            constructor() {
+                super('scene1');
+            }
+            preload(){
+                this.load.path = "./assets/";
+                this.load.audio('logos', 'logos.wav');
+                this.load.spritesheet('slogo', 'slogo.png', {
+                    frameWidth: 500,
+                    frameHeight: 500
+                });
+                
+            }
+            create() {
+                
+                this.cameras.main.setBackgroundColor('#ffffff');
+
+                const backgroundMusic = this.sound.add('logos', { loop: false });
+                backgroundMusic.play();
+                
+        
+                this.imageObject2 = this.add.sprite(
+                    320,//x
+                    240,//y
+                    'slogo',//imagename
+                );
+
+                this.imageObject2.setScale(1); //resize
+                this.anims.create({
+                    key: 'slogo',
+                    frames: this.anims.generateFrameNumbers('slogo', {
+                        start: 0,
+                        end: 11
+                    }),
+                    frameRate: 7,
+                    repeat: 0
+                });
+                this.imageObject2.anims.play('slogo', true);
+
+                this.imageObject2.setScale(1); //resize
+
+                
+                this.time.delayedCall(2000, () => {
+                    this.tweens.add({
+                        targets: this.imageObject2,
+                        alpha:0,
+                        duration: 2000,
+                        //ease: 'Linear',
+                        repeat: 0,
+                        onComplete: () => {
+                            this.textObject8 = this.add.text(
+                                320, //x
+                                240,//y
+                                "click", //text
+                                {
+                                    font: "30px Impact",
+                                    color: "#00000",
+                                    align: "center"
+                                } //style
+                            );
+                            //textObject0.setAlpha(1);
+                            this.tweens.add({
+                                targets: this.textObject8,
+                                alpha:0,
+                                duration: 2000,
+                                repeat: -1,
+                            });
+                        }
+                    });
+                }, null, this);
+                
+                this.input.on('pointerdown', () => this.scene.start('scene2'));
+            }
+        }
+
+        class Scene2 extends Phaser.Scene {
+            constructor() {
+                super('scene2');
+            }
+            preload(){
+                this.load.path = "./assets/";
+                this.load.audio('beat', 'beat.mp3');
+                
+                
+                this.load.image('stringlight', 'stringlight.png');
+                this.load.image('city', 'city.png');
+
+                this.load.spritesheet('Walk', 'Walk.png', {
+                    frameWidth: 48,
+                    frameHeight: 48
+                });
+                this.load.spritesheet('catWalk', 'catWalk.png', {
+                    frameWidth: 48,
+                    frameHeight: 48
+                });
+            }
+            create() {
+                this.cameras.main.setBackgroundColor('0x0B0B45');
+
+                const beat = this.sound.add('beat', { loop: true });
+                beat.play();
+                
+                this.imageObject = this.add.image(
+                400,//x
+                150,//y
+                'stringlight',//imagename
+                )
+                this.imageObject.setScale(1) //resize
+                
+                this.image3Object = this.add.image(
+                    320,//x
+                    240,//y
+                    'city',//imagename
+                )
+                this.image3Object.setScale(1) //resize
+
+
+                
+                this.textObject = this.add.text(
+                    100, //x
+                    150,//y
+                    "THERES A EVIL CAT, \n ON THE LOOSE", //text
+                    {
+                        font: "45px Arial",
+                        color: "#ffffff",
+                        align: "center"
+                    } //style
+                );
+                
+                this.tweens.add({
+                    targets: this.textObject,
+                    alpha:0,
+                    duration: 2000,
+                    repeat: 0,
+                    onComplete: () => {
+                        // Add second text after the first text disappears
+
+                            this.text2Object = this.add.text(
+                                100, //x
+                                150,//y
+                                "WHOS GOING TO \n STOP HIM?", //text
+                                {
+                                    font: "45px Arial",
+                                    color: "#ffffff",
+                                    align: "center"
+                                } //style
+                            );
+                            this.tweens.add({
+                            targets: this.text2Object,
+                            alpha:0,
+                            duration: 2000,
+                            repeat: 0,
+                        //}, null, this);
+                            onComplete: () => {
+                                // Add image after the second text disappears
+
+                                    //cat animations start
+                                    this.imageObjectcat = this.add.sprite(
+                                    450,//x
+                                    350,//y
+                                    'catWalk',//imagename
+                                    );
+
+                                    this.imageObjectcat.setScale(3); //resize
+                                    this.anims.create({
+                                     key: 'catWalk',
+                                    frames: this.anims.generateFrameNumbers('catWalk', {
+                                     start: 0,
+                                     end: 4
+                                    }),
+                                    
+                                     frameRate: 6,
+                                     repeat: -1
+                                    });
+
+                                    this.imageObjectcat.anims.play('catWalk', true);
+
+                                    this.tweens.add({
+                                    targets: this.imageObjectcat,
+                                    y: 330,
+                                    x: 800, // Destination x-coordinate
+                                    duration: 3000,
+                                    ease: 'Linear', // Duration of the tween in milliseconds
+                                    repeat: 0, // Repeat the tween indefinitely
+                                    });
+                                    //CAT END
+
+                                    //DOG START
+                                    this.imageObject2 = this.add.sprite(
+                                    50,//x
+                                    350,//y
+                                    'Walk',//imagename
+                                     );
+                                    this.imageObject2.setScale(3); //resize
+                                    this.anims.create({
+                                     key: 'Walk',
+                                    frames: this.anims.generateFrameNumbers('Walk', {
+                                     start: 0,
+                                     end: 4
+                                    }),
+                                     frameRate: 6,
+                                     repeat: -1
+                                    });
+                                    this.imageObject2.anims.play('Walk', true);
+
+                                    //DOG END
+                                this.tweens.add({
+                                    targets: this.image3Object,
+                                    alpha:0,
+                                    duration: 2000,
+                                    repeat: 0,
+                                
+                                    //////////////TAP BUTTON/////////////////
+                                    onComplete: () => {
+                                        this.textObject8 = this.add.text(
+                                            550, //x
+                                            420,//y
+                                            "tap", //text
+                                            {
+                                                font: "30px Impact",
+                                                color: "#00000",
+                                                align: "center"
+                                            } //style
+                                        );
+                                        //textObject0.setAlpha(1);
+                                        this.tweens.add({
+                                            targets: this.textObject8,
+                                            alpha:0,
+                                            duration: 2000,
+                                            repeat: -1,
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
+                this.input.on('pointerdown', () => this.scene.start('scene3'));
+            }
+        }
+        class Scene3 extends Phaser.Scene {
+            constructor() {
+                super('scene3');
+            }
+            preload() {
+                this.load.path = "./assets/";
+                
+                this.load.image('stringlight', 'stringlight.png');
+                
+                this.load.spritesheet('Walk', 'Walk.png', {
+                    frameWidth: 48,
+                    frameHeight: 48
+                });
+            }
+            create() {
+                this.cameras.main.setBackgroundColor('0x0B0B45');
+
+                this.imageObject = this.add.image(
+                    400,//x
+                    325,//y
+                    'stringlight',//imagename
+                    )
+                    this.imageObject.setScale(1.5) //resize
+                
+                this.imageObject2 = this.add.sprite(
+                    50,//x
+                    350,//y
+                    'Walk',//imagename
+                );
+                this.imageObject2.setScale(3); //resize
+                this.anims.create({
+                    key: 'Walk',
+                    frames: this.anims.generateFrameNumbers('Walk', {
+                        start: 0,
+                        end: 6
+                    }),
+                    frameRate: 10,
+                    repeat: -1
+                });
+                this.imageObject2.anims.play('Walk', true);
+                
+
+
+                this.tweens.add({
+                    targets: this.imageObject2,
+                    x:330,
+                    y:310,
+                    duration: 2000,
+                    ease: 'Linear',
+                    repeat: 0,
+                    onComplete: () => {
+                        // Add shapes after the imageObject reaches its destination
+                        this.graphics = this.add.graphics();
+                        // add shapes with delay
+                        this.time.delayedCall(500, () => {
+                            this.graphics.fillStyle(0xffffff, 1); //color, opacity
+                            this.graphics.fillTriangle(400, 270, 450, 200, 425, 150); //x1, y1, x2, y2, x3, y3
+                        }, null, this);
+                        this.time.delayedCall(500, () => {
+                            this.graphics.fillEllipse(450, 200, 200, 100, 5000);   // x, y, width, height, smoothness
+                        }, null, this);
+                        this.time.delayedCall(500, () => {
+                            let text = "I will!";
+                            let style = { font: "32px Arial", fill: "#000000"};
+                            let textObject = this.add.text(415, 180, text, style);
+                                this.textObject8 = this.add.text(
+                                    550, //x
+                                    420,//y
+                                    "Click", //text
+                                    {
+                                        font: "30px Impact",
+                                        color: "#00000",
+                                        align: "center"
+                                    } //style
+                                );
+                                //textObject0.setAlpha(1);
+                                this.tweens.add({
+                                    targets: this.textObject8,
+                                    alpha:0,
+                                    duration: 2000,
+                                    repeat: -1,
+                                });
+                        }, null, this);
+                        
+                    }
+                   
+                });
+
+                this.input.on('pointerdown', () => this.scene.start('scene4'));
+
+            }
+        }
+        
+        class Scene4 extends Phaser.Scene {
+            constructor() {
+                super('scene4');
+            }
+            preload() {
+                this.load.path = "./assets/";
+                
+                this.load.image('stringlight', 'stringlight.png');
+                this.load.image('title', 'title.png');
+            
+                this.load.spritesheet('Walk', 'Walk.png', {
+                    frameWidth: 180,
+                    frameHeight: 180
+                });
+                
+            }
+            create() {
+                this.cameras.main.setBackgroundColor('0x0B0B45');
+
+                this.imageObject = this.add.image(
+                    400,//x
+                    325,//y
+                    'stringlight',//imagename
+                    )
+                    this.imageObject.setScale(1.5) //resize
+                
+                this.imageObject2 = this.add.sprite(
+                    330,//x
+                    310,//y
+                    'Walk',//imagename
+                );
+                this.imageObject2.setScale(3); //resize
+                this.anims.create({
+                    key: 'Walk',
+                    frames: this.anims.generateFrameNumbers('Walk', {
+                        start: 0,
+                        end:5
+                    }),
+                    frameRate: 10,
+                    repeat: -1
+                });
+                this.imageObject2.anims.play('Walk', true);
+
+                this.tweens.add({
+                    targets: this.imageObject2,
+                    x:530,
+                    y:310,
+                    duration: 1000,
+                    ease: 'Linear',
+                    repeat: 0,
+                    onComplete: () => {
+                    this.imageObject = this.add.image(
+                    150,//x
+                    150,//y
+                    'title',//imagename
+                    )
+                    this.imageObject.setScale(0.75) //resize
+                        let text = this.add.text(50, 230, "PLAY\nSETTINGS\nQUIT", {
+                            fontSize: '64px Arial',
+                            fill: '#FFFFFF',
+                            wordWrap: true,
+                            
+                        });
+                    }
+                });
+            }
+        }
+
+
+        new Phaser.Game( {
+            type: Phaser.AUTO,
+            width: 640,
+            height: 480,
+            //backgroundColor: 0x000000,
+            scene: [S0, Scene1, Scene2, Scene3, Scene4],
+        });
+    </script>
+</body>
+</html>
